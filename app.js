@@ -31,6 +31,7 @@ const initializeMongo = async ()=>{
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use('/user', userRoutes);
+app.use('/userlogin', userRoutes);
 
 app.listen(port, ()=>{
     console.log("server is running");
