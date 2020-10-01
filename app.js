@@ -2,8 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const connectionString = "mongodb+srv://dbUser:dbPassword@cluster0.fdixv.mongodb.net/EcommMinor?retryWrites=true&w=majority";
 require('dotenv').config();
+const connectionString = process.env.CONNECTION_STRING;
 
 
 const userRoutes = require('./routes/user');
@@ -31,7 +31,7 @@ const initializeMongo = async ()=>{
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use('/user', userRoutes);
-app.use('/userlogin', userRoutes);
+
 
 app.listen(port, ()=>{
     console.log("server is running");
