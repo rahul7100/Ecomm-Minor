@@ -3,9 +3,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 require('dotenv').config();
-const connectionString = process.env.CONNECTION_STRING;
-
-
+const connectionString =process.env.CONNECTION_STRING;
 const userRoutes = require('./routes/user');
 
 

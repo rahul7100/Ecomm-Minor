@@ -1,14 +1,21 @@
 const userModel = require('../models/user');
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
+const validator=require('email-validator');
+const { validationResult } = require('express-validator');
 
 
+//FOR REGISTRATION
 exports.register = async (req, res) => {
     try{
         var name = req.body.name;
-        var email = req.body.email;
-        var password = req.body.password;
-        
+        var email = req.body.email; 
+         var password = req.body.password;
+        const errors=validationResult(req);
+        if (!errors.isEmpty()) { 
+            res.json(errors) 
+        } 
+        else{
         await userModel.findOne({email}, async (err,userResult)=>{
             if (err)
                 throw err
@@ -34,8 +41,9 @@ exports.register = async (req, res) => {
                     res.json({msg: "user already exists"});
                 }
             }
-        });
+        });}
     }
+
     catch(err){
         throw err
     }
