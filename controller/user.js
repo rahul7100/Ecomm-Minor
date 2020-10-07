@@ -10,7 +10,7 @@ exports.register = async (req, res) => {
     try{
         var name = req.body.name;
         var email = req.body.email; 
-         var password = req.body.password;
+        var password = req.body.password;
         const errors=validationResult(req);
         if (!errors.isEmpty()) { 
             res.json(errors) 
@@ -61,6 +61,13 @@ exports.login = async (req, res) => {
             throw err;
         }
         else{
+            const errors=validationResult(req);
+            if (!errors.isEmpty()) 
+            { 
+            res.json(errors) 
+            }
+         else
+            {
             if(!userResult)
             {    
                  res.json({msg:"USER DOESNOT EXIST"});
@@ -78,6 +85,7 @@ exports.login = async (req, res) => {
                 }
             }
         }
+    }
     });
 }
 catch(err){
