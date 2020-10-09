@@ -49,46 +49,70 @@ exports.register = async (req, res) => {
     }
 }
 
+
+
+
+
 //FOR LOGIN
 exports.login = async (req, res) => {
 
     try{
             var email = req.body.email;
             var password = req.body.password;
-
-    await userModel.findOne({email}, async (err,userResult)=>{
-        if(err){
-            throw err;
-        }
-        else{
-            const errors=validationResult(req);
-            if (!errors.isEmpty()) 
-            { 
+            var email = req.body.email; 
+        var password = req.body.password;
+        const errors=validationResult(req);
+        if (!errors.isEmpty()) { 
             res.json(errors) 
-            }
-         else
-            {
-            if(!userResult)
-            {    
-                 res.json({msg:"USER DOESNOT EXIST"});
+        } 
+        else{
+
+        await userModel.findOne({email}, async (err,userResult)=>{
+            if(err){
+                throw err;
             }
             else{
-                   if(await bcrypt.compare(password, userResult.hash_pass))
-                {
-                    const token = jwt.sign({_id: userResult._id, username: userResult.email}, process.env.JWT_SECRET, {expiresIn: '2h'});
-                    res.cookie('t', token, { expire: new Date() + 999999});
-                    res.json({token,userResult})   
+                const errors=validationResult(req);
+                if (!errors.isEmpty()) 
+                { 
+                res.json(errors) 
                 }
-                else
+            else
                 {
-                    res.json({msg:"wrong password"})
+                if(!userResult)
+                {    
+                    res.json({msg:"USER DOESNOT EXIST"});
+                }
+                else{
+                    if(await bcrypt.compare(password, userResult.hash_pass))
+                    {
+                        const token = jwt.sign({_id: userResult._id, username: userResult.email}, process.env.JWT_SECRET, {expiresIn: '2h'});
+                        res.cookie('t', token, { expire: new Date() + 999999});
+                        res.json({token,userResult})   
+                    }
+                    else
+                    {
+                        res.json({msg:"wrong password"})
+                    }
                 }
             }
         }
+        });}
     }
-    });
+
+    catch(err){
+        throw err
+    }
 }
-catch(err){
-    throw err
+
+//FOR SIGNOUT
+
+exports.signout=async(req,res,next)=>{
+    try{
+        res.clearCookie("t");
+        res.json({msg:"SIGNOUT SUCCESSFUL"});
+    }
+    catch(err){
+        throw err;
+    }
 }
-} 

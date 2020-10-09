@@ -6,15 +6,16 @@ const { check, validationResult } = require('express-validator');
 
 
 router.post('/register',[
-        check('name','Wrong SYNTAX').isLength({ min: 5, max: 15 }),
-        check('email','PLEASE USE WRITE SYNTAX').isEmail().isLength({ min: 10, max: 30 }), 
-        check('password','PASSWORD BETWEEN 8 TO 10').isLength({ min: 8, max: 12 })
+        check('name','Wrong SYNTAX').isLength({ min: 5 }),
+        check('email','PLEASE USE WRITE SYNTAX').isEmail().isLength({ min: 10 }), 
+        check('password','PASSWORD BETWEEN 8 TO 10').isLength({ min: 8})
         
 ],userController.register);
 router.post('/login',[
-        check('email','PLEASE USE WRITE SYNTAX').isEmail().isLength({ min: 10, max: 30 }), 
-        check('password','PASSWORD BETWEEN 8 TO 10').isLength({ min: 8, max: 12 })
+        check('email','PLEASE USE WRITE SYNTAX').isEmail().isLength({ min: 10}), 
+        check('password','PASSWORD BETWEEN 8 TO 10').isLength({ min: 8 })
         
 ], userController.login);
+router.post('/signout',userController.signout);
 
 module.exports = router;
