@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const validator = require("email-validator");
 const { validationResult } = require("express-validator");
+const exp_jwt=require("express-jwt");
 
 //FOR REGISTRATION
 exports.register = async (req, res) => {
@@ -47,8 +48,6 @@ exports.login = async (req, res) => {
   try {
     var email = req.body.email;
     var password = req.body.password;
-    var email = req.body.email;
-    var password = req.body.password;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.json(errors);
@@ -56,11 +55,7 @@ exports.login = async (req, res) => {
       await userModel.findOne({ email }, async (err, userResult) => {
         if (err) {
           throw err;
-        } else {
-          const errors = validationResult(req);
-          if (!errors.isEmpty()) {
-            res.json(errors);
-          } else {
+        }  else {
             if (!userResult) {
               res.json({ msg: "USER DOESNOT EXIST" });
             } else {
@@ -76,7 +71,7 @@ exports.login = async (req, res) => {
                 res.json({ msg: "wrong password" });
               }
             }
-          }
+          
         }
       });
     }
