@@ -1,9 +1,8 @@
 const userModel = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const validator = require("email-validator");
 const { validationResult } = require("express-validator");
-const exp_jwt=require("express-jwt");
+const exp_jwt = require("express-jwt");
 
 //FOR REGISTRATION
 exports.register = async (req, res) => {
@@ -55,23 +54,22 @@ exports.login = async (req, res) => {
       await userModel.findOne({ email }, async (err, userResult) => {
         if (err) {
           throw err;
-        }  else {
-            if (!userResult) {
-              res.json({ msg: "USER DOESNOT EXIST" });
+        } else {
+          if (!userResult) {
+            res.json({ msg: "USER DOESNOT EXIST" });
+          } else {
+            if (await bcrypt.compare(password, userResult.hash_pass)) {
+              const token = jwt.sign(
+                { _id: userResult._id, username: userResult.email },
+                process.env.JWT_SECRET,
+                { expiresIn: "2h" }
+              );
+              res.cookie("t", token, { expire: new Date() + 999999 });
+              res.json({ token, userResult });
             } else {
-              if (await bcrypt.compare(password, userResult.hash_pass)) {
-                const token = jwt.sign(
-                  { _id: userResult._id, username: userResult.email },
-                  process.env.JWT_SECRET,
-                  { expiresIn: "2h" }
-                );
-                res.cookie("t", token, { expire: new Date() + 999999 });
-                res.json({ token, userResult });
-              } else {
-                res.json({ msg: "wrong password" });
-              }
+              res.json({ msg: "wrong password" });
             }
-          
+          }
         }
       });
     }
