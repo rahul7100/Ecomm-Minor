@@ -7,17 +7,16 @@ const { check } = require("express-validator");
 router.post(
   "/register",
   [
-    check("name", "Wrong SYNTAX").isLength({ min: 5 }),
-    check("email", "PLEASE USE WRITE SYNTAX").isEmail(),
-    check("password", "PASSWORD BETWEEN 8").isLength({ min: 8 }),
+    check("email", "Please write correct email").isEmail(),
+    check("password", "PASSWORD length should be atleast 8").isLength({ min: 8 }),
   ],
   userController.register
 );
 router.post(
   "/login",
   [
-    check("email", "PLEASE USE WRITE SYNTAX").isEmail(),
-    check("password", "PASSWORD BETWEEN 8").isLength({ min: 8 }),
+    check("email", "Please write correct email").isEmail(),
+    check("password", "PASSWORD length should be atleast 8").isLength({ min: 8 }),
   ],
   userController.login
 );
@@ -27,7 +26,6 @@ router.get(
   "/secret/:userById",
   userController.requireSignin,
   userController.isAuth,
-  userController.isAdmin,
   (req, res) => {
     res.json({ msg: "hello world", user: req.profile });
   }

@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const connectionString =process.env.CONNECTION_STRING;
 const userRoutes = require('./routes/user');
+const categoryRoutes = require('./routes/category');
 
 
 const app = express();
@@ -29,6 +30,7 @@ const initializeMongo = async ()=>{
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use('/user', userRoutes);
+app.use('/api/category', categoryRoutes);
 
 
 app.listen(port, ()=>{
