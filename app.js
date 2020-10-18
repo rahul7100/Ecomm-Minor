@@ -6,6 +6,7 @@ require('dotenv').config();
 const connectionString =process.env.CONNECTION_STRING;
 const userRoutes = require('./routes/user');
 const categoryRoutes = require('./routes/category');
+const productRoutes = require('./routes/product');
 
 
 const app = express();
@@ -31,6 +32,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use('/user', userRoutes);
 app.use('/api/category', categoryRoutes);
+app.use('/api/product', productRoutes);
 
 
 app.listen(port, ()=>{
