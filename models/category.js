@@ -6,8 +6,8 @@ const categorySchema = new mongoose.Schema({
         required: true,
         trim: true
     }
-},{timestamp: true});
+},{timestamps: true});
 
-const user = new mongoose.model("categories", categorySchema);
+const user = mongoose.model("categories", categorySchema);
 module.exports = user;
 
