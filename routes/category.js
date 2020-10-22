@@ -4,7 +4,7 @@ const router = express.Router();
 
 const { requireSignin, isAuth, isAdmin, userById} = require('../controller/user');
 
-router.post("/create/:userById", requireSignin, isAuth, isAdmin, categoryController.create);
+router.post("/create/:userById", requireSignin, isAuth,  categoryController.create);
 router.param("userById", userById);
 
 

@@ -9,8 +9,13 @@ exports.create=async(req,res)=>
         var description=req.body.description;
         var quantity=req.body.quantity;
         var price = req.body.price;
-        var category = req.body.category;
-        const product=new productModel({name,description,quantity,price,category});
+       // var category = req.body.category;
+       if(!req.file)
+       {
+           res.json({"msg":"please upload correct file"})
+       }
+       else{
+        const product=new productModel({name,description,quantity,price});
         await product.save((err,data)=>
         {
             if(err)
@@ -22,7 +27,65 @@ exports.create=async(req,res)=>
             }
         })
     }
+}
     catch(err){
         throw err;
     }
+
 }
+
+
+exports.productById = async (req, res, next, id) => {
+    try {
+      
+      await productModel.findById({ _id: id }, (err, product) => {
+        if (err) {
+          throw err;
+        } else {
+          if (!product) {
+            res.json({ msg: "product not found" });
+          } else {
+           
+            req.product =product;
+            next();
+          }
+        }
+      });
+    } catch (err) {
+      throw err;
+    }
+  }
+
+
+  exports.read = async (req, res, next) => {
+    try {
+        var product=req.product;
+        res.json({product});
+    }
+    catch(err)
+    {
+        throw err;
+    }
+}
+
+exports.remove = async (req, res, next) => {
+  try {
+      var product=req.product;
+      await productModel.remove({_id: product._id},(err,deletedProduct)=>
+      {
+        if (err)
+        {
+          throw err
+        }
+        else{
+          res.json({"msg":"Product deleted successfully "});
+        }
+      });
+      
+  }
+  catch(err)
+  {
+      throw err;
+  }
+}
+

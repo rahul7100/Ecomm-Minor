@@ -13,12 +13,24 @@ var storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage: storage });
+const fileFilter=(req,file,cb)=>{
+    if(file.mimetype==='image/jpeg'||file.mimetype==='image/png'||file.mimetype==='image/jpg')
+    {
+        cb(null,true);
+    }else{
+        cb(null,false);
+    }
+}
+const upload = multer({ storage: storage,
+fileFilter:fileFilter });
 
 const { requireSignin, isAuth, isAdmin, userById} = require('../controller/user');
 
-router.post("/create/:userById", requireSignin, isAuth, isAdmin, upload.single('productImage'), productController.create);
+router.get("/read/:productById",productController.read);
+router.delete("/remove/:userById/:productById",requireSignin, isAuth,productController.remove);
+router.post("/create/:userById", requireSignin, isAuth, upload.single('productImage'), productController.create);
 router.param("userById", userById);
+router.param("productById", productController.productById);
 
 
 module.exports = router;
