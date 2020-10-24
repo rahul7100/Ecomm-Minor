@@ -45,7 +45,7 @@ exports.productById = async (req, res, next, id) => {
           if (!product) {
             res.json({ msg: "product not found" });
           } else {
-           
+           console.log(product);
             req.product =product;
             next();
           }
@@ -85,6 +85,32 @@ exports.remove = async (req, res, next) => {
   }
   catch(err)
   {
+      throw err;
+  }
+}
+
+exports.update=async(req,res,next)=>
+{
+
+  try{
+    var productid=req.product._id;
+    var updates=req.body;
+    console.log(productid);
+
+    await productModel.findByIdAndUpdate(productid, updates,(err,updatedProduct)=>
+      {
+        if (err)
+        {
+              throw err
+        }
+        else{
+          res.json({"msg":"Product updated successfully ",updatedProduct});
+        }
+      });
+      
+
+  }
+  catch(err){
       throw err;
   }
 }

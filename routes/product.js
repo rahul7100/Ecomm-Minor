@@ -27,6 +27,7 @@ fileFilter:fileFilter });
 const { requireSignin, isAuth, isAdmin, userById} = require('../controller/user');
 
 router.get("/read/:productById",productController.read);
+router.post("/update/:productById",productController.update);
 router.delete("/remove/:userById/:productById",requireSignin, isAuth,productController.remove);
 router.post("/create/:userById", requireSignin, isAuth, upload.single('productImage'), productController.create);
 router.param("userById", userById);
