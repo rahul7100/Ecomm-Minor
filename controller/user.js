@@ -105,6 +105,7 @@ exports.userById = async (req, res, next, id) => {
           res.json({ msg: "user not found" });
         } else {
           req.profile = user;
+          console.log(req.profile);
           next();
         }
       }
@@ -113,6 +114,8 @@ exports.userById = async (req, res, next, id) => {
     throw err;
   }
 }
+
+
 
 exports.isAuth = (req, res, next) => {
   let user = req.profile && req.auth && req.profile._id == req.auth._id;

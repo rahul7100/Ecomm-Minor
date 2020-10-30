@@ -19,11 +19,11 @@ const productSchema= new mongoose.Schema(
             type: Number,
             required: true
         },
-    //    category:{
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: 'categories',
-    //         required: true
-    //     }
+       category:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'categories',
+            required: true
+        }
     },{timestamps:true});
 
     const user = new mongoose.model("products", productSchema);
